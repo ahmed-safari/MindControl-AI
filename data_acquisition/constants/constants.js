@@ -4,7 +4,7 @@ export const triangles = [
   { points: "100,10 190,190 10,190", color: "#10B981", frequency: 15 },
 ];
 
-export const quotes = [
+export const loadingMessages = [
   "Cooking the next triangle...",
   "This shouldn't take long...",
   "Thank you for your patience.",

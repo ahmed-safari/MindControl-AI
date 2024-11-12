@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { triangles, quotes } from "../constants/constants";
+import { triangles, loadingMessages } from "../constants/constants";
 import useBrainwaveData from "./useBrainwaveData";
 
 export default function useSession(neurosity, setLogMessages) {
@@ -75,9 +75,13 @@ export default function useSession(neurosity, setLogMessages) {
         } else {
           setCurrentStimulus("noise");
           setCurrentFrequency(0);
-          const quoteIndex = Math.floor(currentStep / 2) % quotes.length;
-          const quote = quotes[quoteIndex];
-          setLogMessages((prev) => [...prev, `Showing quote: "${quote}"`]);
+          const loadingMessageIndex =
+            Math.floor(currentStep / 2) % loadingMessages.length;
+          const loadingMessage = loadingMessages[loadingMessageIndex];
+          setLogMessages((prev) => [
+            ...prev,
+            `Showing loading message: "${loadingMessage}"`,
+          ]);
 
           stepTimer = setTimeout(() => {
             setCurrentStep((prev) => prev + 1);
@@ -112,6 +116,6 @@ export default function useSession(neurosity, setLogMessages) {
     blink,
     startSession,
     triangles,
-    quotes,
+    loadingMessages,
   };
 }

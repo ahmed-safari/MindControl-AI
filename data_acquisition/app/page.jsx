@@ -5,7 +5,7 @@ import useSession from "../hooks/useSession";
 import DeviceStatus from "../components/DeviceStatus";
 import LogMessages from "../components/LogMessages";
 import TriangleDisplay from "../components/TriangleDisplay";
-import QuoteDisplay from "../components/QuoteDisplay";
+import LoadingMessageDisplay from "../components/LoadingMessageDisplay";
 import InstructionMessage from "../components/InstructionMessage";
 import { instructionMessage } from "../constants/constants";
 
@@ -14,8 +14,14 @@ export default function Home() {
   const { neurosity, deviceStatus, signalQuality } =
     useNeurosity(setLogMessages);
 
-  const { started, currentStep, blink, startSession, triangles, quotes } =
-    useSession(neurosity, setLogMessages);
+  const {
+    started,
+    currentStep,
+    blink,
+    startSession,
+    triangles,
+    loadingMessages,
+  } = useSession(neurosity, setLogMessages);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200">
@@ -60,7 +66,7 @@ export default function Home() {
         <InstructionMessage instructionMessage={instructionMessage} />
       )}
 
-      {/* Triangle and Quote Display */}
+      {/* Triangle and Loading Message Display */}
       {started && currentStep >= 0 && currentStep < triangles.length * 2 && (
         <>
           {currentStep % 2 === 0 ? (
@@ -70,9 +76,13 @@ export default function Home() {
               blink={blink}
             />
           ) : (
-            // Quote Step
-            <QuoteDisplay
-              quote={quotes[Math.floor(currentStep / 2) % quotes.length]}
+            // Loading Message Step
+            <LoadingMessageDisplay
+              loadingMessage={
+                loadingMessages[
+                  Math.floor(currentStep / 2) % loadingMessages.length
+                ]
+              }
             />
           )}
         </>
