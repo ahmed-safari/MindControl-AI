@@ -24,6 +24,9 @@ This data collection wizard is a vital part of the BCI project, collecting EEG d
 
 To set up and run this data acquisition wizard, please follow these steps:
 
+**Make sure you're in the /data_acquisition directory**:  
+`cd data_acquisition`
+
 1. **Install Packages**:  
    Run `npm i` to install all necessary packages.
 
@@ -31,9 +34,9 @@ To set up and run this data acquisition wizard, please follow these steps:
    Create a `.env` file in the root directory with the following variables:
 
    ```plaintext
-   NEXT_PUBLIC_DEVICE_ID=
-   NEXT_PUBLIC_EMAIL=
-   NEXT_PUBLIC_PASSWORD=
+   NEXT_PUBLIC_DEVICE_ID=<neuoristy_deviceId>
+   NEXT_PUBLIC_EMAIL=<neuoristy_email>
+   NEXT_PUBLIC_PASSWORD=<neuoristy_password>
    ```
 
    Replace the placeholders with your actual Neurosity credentials.
