@@ -14,3 +14,6 @@ export const loadingMessages = [
 
 export const instructionMessage =
   "Please keep staring at the screen and stay still until the session is over.";
+
+export const triangleTimer = 40000;
+export const noiseTimer = 20000;

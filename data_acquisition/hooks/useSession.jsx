@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { triangles, loadingMessages } from "../constants/constants";
+import {
+  triangles,
+  loadingMessages,
+  triangleTimer,
+  noiseTimer,
+} from "../constants/constants";
 import useBrainwaveData from "./useBrainwaveData";
 
 export default function useSession(neurosity, setLogMessages) {
@@ -30,8 +35,6 @@ export default function useSession(neurosity, setLogMessages) {
   useEffect(() => {
     let blinkTimer;
     let stepTimer;
-    const triangleTimer = 4000;
-    const noiseTimer = 2000;
     let subscription;
 
     if (started) {
