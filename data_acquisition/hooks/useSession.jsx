@@ -11,22 +11,23 @@ export default function useSession(neurosity, setLogMessages) {
   const [started, setStarted] = useState(false);
   const [currentStep, setCurrentStep] = useState(-1);
   const [blink, setBlink] = useState(true);
-  const [currentStimulus, setCurrentStimulus] = useState("noise");
+  const subscriptionsRef = useRef([]);
+  // const [currentStimulus, setCurrentStimulus] = useState("noise");
   const [currentFrequency, setCurrentFrequency] = useState(0);
 
-  const currentStimulusRef = useRef(currentStimulus);
+  // const currentStimulusRef = useRef(currentStimulus);
   const currentFrequencyRef = useRef(currentFrequency);
 
   const { startRecording, saveDataToCSV } = useBrainwaveData(
     neurosity,
-    currentStimulusRef,
+    // currentStimulusRef,
     currentFrequencyRef,
     setLogMessages
   );
 
-  useEffect(() => {
-    currentStimulusRef.current = currentStimulus;
-  }, [currentStimulus]);
+  // useEffect(() => {
+  //   currentStimulusRef.current = currentStimulus;
+  // }, [currentStimulus]);
 
   useEffect(() => {
     currentFrequencyRef.current = currentFrequency;
@@ -35,12 +36,13 @@ export default function useSession(neurosity, setLogMessages) {
   useEffect(() => {
     let blinkTimer;
     let stepTimer;
-    let subscription;
+    let subs = [];
 
     if (started) {
       if (currentStep === -1) {
-        subscription = startRecording();
-        setCurrentStimulus("noise");
+        subs = startRecording();
+        subscriptionsRef.current = subs;
+        // setCurrentStimulus("noise");
         setCurrentFrequency(0);
 
         setLogMessages((prev) => [
@@ -57,7 +59,7 @@ export default function useSession(neurosity, setLogMessages) {
           const triangleIndex = Math.floor(currentStep / 2);
           const triangle = triangles[triangleIndex];
           const frequency = triangle.frequency;
-          setCurrentStimulus("triangle");
+          // setCurrentStimulus("triangle");
           setCurrentFrequency(frequency);
           const interval = (1 / (2 * frequency)) * 1000;
 
@@ -76,7 +78,7 @@ export default function useSession(neurosity, setLogMessages) {
             setCurrentStep((prev) => prev + 1);
           }, triangleTimer);
         } else {
-          setCurrentStimulus("noise");
+          // setCurrentStimulus("noise");
           setCurrentFrequency(0);
           const loadingMessageIndex =
             Math.floor(currentStep / 2) % loadingMessages.length;
@@ -91,8 +93,13 @@ export default function useSession(neurosity, setLogMessages) {
           }, noiseTimer);
         }
       } else {
-        if (subscription) {
-          subscription.unsubscribe();
+        const subs = subscriptionsRef.current;
+        console.log("Subscriptions length:", subs.length);
+
+        if (subs && subs.length > 0) {
+          subs.forEach((subscription) => {
+            subscription.unsubscribe();
+          });
         }
         saveDataToCSV();
         setLogMessages((prev) => [...prev, "Session ended."]);
