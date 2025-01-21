@@ -15,7 +15,7 @@ export default function saveDataToCSV(brainwaveData) {
     "type",
     "timestamp",
     "laptop_timestamp",
-
+    "participantName",
     // 8 raw channels (CP3, C3, F5, PO3, PO4, F6, C4, CP4):
     "raw_CP3",
     "raw_C3",
@@ -48,12 +48,15 @@ export default function saveDataToCSV(brainwaveData) {
     "frequency",
   ];
 
+  let particpantName = brainwaveData[0]?.participantName || "unknown";
+
   // Convert each data point into a CSV row
   const rows = brainwaveData.map((dataPoint) => {
     const {
       type = "",
       timestamp = "",
       laptop_timestamp = "",
+      participantName = "",
       data = [],
       alpha = [],
       beta = [],
@@ -91,6 +94,7 @@ export default function saveDataToCSV(brainwaveData) {
       type,
       timestamp,
       laptop_timestamp,
+      participantName,
 
       // raw channels (8)
       ...rawChannels,
@@ -119,7 +123,7 @@ export default function saveDataToCSV(brainwaveData) {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = "brainwaves_data.csv";
+  link.download = `brainwaves_data_${particpantName}.csv`;
   link.click();
   URL.revokeObjectURL(url);
 }
